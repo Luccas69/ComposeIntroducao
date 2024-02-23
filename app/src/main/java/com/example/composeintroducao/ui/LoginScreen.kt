@@ -25,10 +25,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composeintroducao.R
 import androidx.compose.material3.Button
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.composeintroducao.ui.theme.ComposeIntroducaoTheme
 
 
 @Composable
-fun TelaLogin (){
+fun LoginScreen (
+    navController: NavController
+){
     
     var usuario by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("")}
@@ -78,6 +83,8 @@ fun TelaLogin (){
 
 @Preview(showBackground = true)
 @Composable
-fun TelaLoginPreview(){
-    TelaLogin()
+fun LoginScreenPreview(){
+    ComposeIntroducaoTheme {
+        LoginScreen(rememberNavController())
+    }
 }

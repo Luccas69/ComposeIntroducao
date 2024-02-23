@@ -11,9 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun TelaInicial () {
+fun InicioScreen (
+    navController : NavController
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.Gray
@@ -38,5 +42,5 @@ fun TelaInicial () {
 @Preview(showBackground = true)
 @Composable
 fun InicioScreenPreview() {
-    TelaInicial()
+    InicioScreen(rememberNavController())
 }
