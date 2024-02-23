@@ -31,6 +31,7 @@ fun InicioScreen (
             Text("Não Autenticado")
 
             Button(onClick = {
+                navController.navigate("login")
             }
             ) {
                 Text("Minha Conta")

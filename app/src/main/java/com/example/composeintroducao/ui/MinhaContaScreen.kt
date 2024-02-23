@@ -37,7 +37,7 @@ import com.example.composeintroducao.ui.theme.ComposeIntroducaoTheme
 fun MinhaContaScreen(
     navController: NavController
 ) {
-    val showAlert = remember { mutableStateOf(false)  }
+    val showAlert = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -70,7 +70,7 @@ fun MinhaContaScreen(
                 },
                 shape = CircleShape,
                 contentPadding = PaddingValues(0.dp),
-                modifier= Modifier
+                modifier = Modifier
                     .size(50.dp)
                     .align(Alignment.BottomEnd)
             ) {
