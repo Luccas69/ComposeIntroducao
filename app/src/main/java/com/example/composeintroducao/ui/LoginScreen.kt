@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,9 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composeintroducao.R
 import androidx.compose.material3.Button
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeintroducao.ui.theme.ComposeIntroducaoTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.ViewModel
+import com.example.composeintroducao.viewmodel.AuthViewModel
 
 
 @Composable
@@ -35,8 +40,9 @@ fun LoginScreen (
     navController: NavController
 ){
     
-    var usuario by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("")}
+    val showAlert = remember { mutableStateOf(false)}
     
     
     Surface (
@@ -57,10 +63,11 @@ fun LoginScreen (
                     .size(150.dp)
             )
             OutlinedTextField(
-                value = usuario,
-                onValueChange = { usuario = it },
-                label = { Text("Usuário") }
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") }
             )
+
             OutlinedTextField(
                 value = senha,
                 onValueChange = { senha = it },
@@ -69,6 +76,16 @@ fun LoginScreen (
             )
             
             Button(onClick = {
+                viewModel().login(
+                    email,
+                    senha,
+                    onSucess = {
+                        navController.navigate("minha-conta")
+                    },
+                    onError = {
+
+                    }
+                )
             }, modifier = Modifier
                 .padding(24.dp)
                 .width(280.dp)

@@ -20,7 +20,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeIntroducaoTheme {
-                val navController = rememberNavController()
+                    val navController = rememberNavController()
+
+
                     NavHost(
                         navController = navController,
                         startDestination = "inicio"
