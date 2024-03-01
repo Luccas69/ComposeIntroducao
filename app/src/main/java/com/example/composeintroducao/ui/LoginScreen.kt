@@ -4,11 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,25 +23,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composeintroducao.R
 import androidx.compose.material3.Button
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeintroducao.ui.theme.ComposeIntroducaoTheme
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.ViewModel
 import com.example.composeintroducao.viewmodel.AuthViewModel
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen (
     navController: NavController
 ){
-    
-    var email by remember { mutableStateOf("") }
+
+    var user by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("")}
     val showAlert = remember { mutableStateOf(false)}
-    
-    
+    val viewModel = viewModel<AuthViewModel>()
+
     Surface (
         modifier = Modifier.fillMaxSize(),
         color = Color.White
@@ -63,8 +61,8 @@ fun LoginScreen (
                     .size(150.dp)
             )
             OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
+                value = user,
+                onValueChange = { user  = it },
                 label = { Text("Email") }
             )
 
@@ -74,23 +72,20 @@ fun LoginScreen (
                 label = { Text("Senha") },
                 visualTransformation = PasswordVisualTransformation(),
             )
-            
-            Button(onClick = {
-                viewModel().login(
-                    email,
-                    senha,
-                    onSucess = {
-                        navController.navigate("minha-conta")
-                    },
-                    onError = {
 
-                    }
-                )
-            }, modifier = Modifier
-                .padding(24.dp)
-                .width(280.dp)
-                .height(60.dp)
+            Button(
+                onClick = {
+                    viewModel.login(
+                        user,
+                        senha,
+                        onSucess ={
 
+                        },
+                        onError = {
+
+                        },
+                    )
+                },
             ) {
                 Text("Entrar")
             }

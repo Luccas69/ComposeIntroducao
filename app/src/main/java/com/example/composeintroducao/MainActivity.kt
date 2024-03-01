@@ -12,8 +12,9 @@ import com.example.composeintroducao.ui.InicioScreen
 import com.example.composeintroducao.ui.LoginScreen
 import com.example.composeintroducao.ui.MinhaContaScreen
 import com.example.composeintroducao.ui.theme.ComposeIntroducaoTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +22,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposeIntroducaoTheme {
                     val navController = rememberNavController()
-
 
                     NavHost(
                         navController = navController,
