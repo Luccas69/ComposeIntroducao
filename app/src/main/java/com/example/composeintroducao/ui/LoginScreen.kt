@@ -24,15 +24,12 @@ import androidx.compose.ui.unit.dp
 import com.example.composeintroducao.R
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composeintroducao.ui.theme.ComposeIntroducaoTheme
 import com.example.composeintroducao.viewmodel.AuthViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen (
     navController: NavController
@@ -40,8 +37,8 @@ fun LoginScreen (
 
     var user by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("")}
-    val showAlert = remember { mutableStateOf(false)}
-    val viewModel = viewModel<AuthViewModel>()
+    var error by remember { mutableStateOf("")}
+    val viewModel = hiltViewModel<AuthViewModel>()
 
     Surface (
         modifier = Modifier.fillMaxSize(),
@@ -60,10 +57,15 @@ fun LoginScreen (
                     .padding(bottom = 24.dp)
                     .size(150.dp)
             )
+
+            if (error.isNotBlank()){
+                Text(error)
+            }
+
             OutlinedTextField(
                 value = user,
                 onValueChange = { user  = it },
-                label = { Text("Email") }
+                label = { Text("Usuário") }
             )
 
             OutlinedTextField(
@@ -79,10 +81,11 @@ fun LoginScreen (
                         user,
                         senha,
                         onSucess ={
+                                  navController.navigate("minha-conta")
 
                         },
-                        onError = {
-
+                        onError = { message ->
+                                  error = message
                         },
                     )
                 },
