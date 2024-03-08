@@ -31,16 +31,17 @@ import com.example.composeintroducao.viewmodel.AuthViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun LoginScreen (
+fun LoginScreen(
     navController: NavController
-){
+) {
 
     var user by remember { mutableStateOf("") }
-    var senha by remember { mutableStateOf("")}
-    var error by remember { mutableStateOf("")}
+    var senha by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf("") }
     val viewModel = hiltViewModel<AuthViewModel>()
 
-    Surface (
+
+    Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.White
     ) {
@@ -58,13 +59,13 @@ fun LoginScreen (
                     .size(150.dp)
             )
 
-            if (error.isNotBlank()){
+            if (error.isNotBlank()) {
                 Text(error)
             }
 
             OutlinedTextField(
                 value = user,
-                onValueChange = { user  = it },
+                onValueChange = { user = it },
                 label = { Text("Usuário") }
             )
 
@@ -80,12 +81,12 @@ fun LoginScreen (
                     viewModel.login(
                         user,
                         senha,
-                        onSucess ={
-                                  navController.navigate("minha-conta")
+                        onSucess = {
+                            navController.navigate("minha-conta")
 
                         },
                         onError = { message ->
-                                  error = message
+                            error = message
                         },
                     )
                 },
@@ -93,12 +94,17 @@ fun LoginScreen (
                 Text("Entrar")
             }
         }
+
+        if(viewModel.loading.value){
+            LoadScreen()
+        }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview(){
+fun LoginScreenPreview() {
     ComposeIntroducaoTheme {
         LoginScreen(rememberNavController())
     }
