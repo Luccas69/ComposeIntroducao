@@ -122,8 +122,12 @@ fun MinhaContaScreen(
             confirmButton = {
                 Button(
                     onClick = {
-
                         showAlert.value = false
+                        viewModel.logout(
+                            onSuccess = {
+                                navController.navigate("inicio")
+                            }
+                        )
                     }
                 ) {
                     Text("Sair")
@@ -140,7 +144,15 @@ fun MinhaContaScreen(
             }
         )
     }
+
+    if (viewModel.loading.value) {
+        LoadScreen()
+    }
 }
+
+
+
+
 
 @Preview(showBackground = true)
 @Composable

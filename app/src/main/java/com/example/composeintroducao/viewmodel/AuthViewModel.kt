@@ -15,19 +15,19 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val appDataStore: AppDataStore
-): ViewModel() {
+) : ViewModel() {
 
     val loading = mutableStateOf(false)
     val autenticado = mutableStateOf(false)
 
 
-    fun login (
+    fun login(
         user: String,
         senha: String,
         onSucess: () -> Unit,
         onError: (String) -> Unit,
     ) {
-        if(user.isNullOrEmpty()) {
+        if (user.isNullOrEmpty()) {
             onError("Informe o usuário")
             return
         }
@@ -47,11 +47,17 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun logout(){
+    fun logout(
+        onSuccess: () -> Unit
+    ) {
+
+        loading.value = true
+
         viewModelScope.launch {
-            appDataStore.putBoolean(AppDataStoreKeys.AUTENTICADO, false)
-
-
+            delay(4000)
+            appDataStore.putBoolean(AppDataStoreKeys.AUTENTICADO, false). apply {
+                onSuccess()
+            }
         }
     }
 }
