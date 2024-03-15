@@ -13,8 +13,11 @@ object ApiConfig {
 
     @Singleton
     @Provides
-    fun providesHttpLoggingInterceptor() = HttpLoggingInterceptor()
+    fun providesHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
         this.level = HttpLoggingInterceptor.Level.HEADERS
+    }
+
+
 
 
 }
