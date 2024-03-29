@@ -9,6 +9,14 @@ import com.example.composeintroducao.datastore.AppDataStoreKeys
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.POST
 import java.util.prefs.Preferences
 import javax.inject.Inject
 
@@ -39,25 +47,54 @@ class AuthViewModel @Inject constructor(
 
         loading.value = true
 
+        val requestBody = LoginRequestBody()
+        requestBody.email = user
+        requestBody.senha = senha
+
+        val retrofit = Retrofit.Builder()
+            .client(OkHttpClient.Builder().build())
+            .baseUrl("https://api-estudos.vercel.app")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val endpoint = retrofit.create(Endpoint::class.java)
+
         viewModelScope.launch {
-            delay(4000)
-            appDataStore.putBoolean(AppDataStoreKeys.AUTENTICADO, true).apply {
-                onSucess()
-            }
+            val callback = endpoint.login(requestBody)
+
+            callback.enqueue(object : Callback<LoginResponseBody> {
+                override fun onFailure(call: Call<LoginResponseBody>, t: Throwable) {
+                    if (t.message.isNullOrBlank()) {
+                        onError("No fall message avaliable")
+                    } else {
+                        onError(t.message!!)
+                    }
+                }
+
+                override fun onResponse(call: Call<LoginResponseBody>, response: Response<LoginResponseBody>){
+                    onSucess()
+                    response.body()?.let { responseBody ->
+                        print(responseBody.token)
+                    }
+                }
+
+            })
         }
     }
 
-    fun logout(
-        onSuccess: () -> Unit
-    ) {
+    fun logout(onSuccess: () -> Unit) {
 
         loading.value = true
 
         viewModelScope.launch {
             delay(4000)
-            appDataStore.putBoolean(AppDataStoreKeys.AUTENTICADO, false). apply {
+            appDataStore.putBoolean(AppDataStoreKeys.AUTENTICADO, false).apply {
                 onSuccess()
             }
         }
     }
 }
+    interface Endpoint {
+        @POST("/login")
+        fun login(@Body requestBody: LoginRequestBody): Call<LoginResponseBody>
+    }
